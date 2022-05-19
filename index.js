@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const url = '';
 const options = { headless:true, slowMo: 600,devtools: true  };
 const selector = '.collection-card';
-const zones = [3,4,5,6,7,8];
+const zones = [3,4,5,6,7,8,9,10,11];
 // run this function in a loop to get all zones 3-8
 // function should start at one URL, collect data, push it into object, then move to the next URL and repeat
 // at the end, print out the finished object to a JSON file to use as an API endpoint
@@ -20,12 +20,7 @@ async function scrape(){
         // get Evergreen trees
         await page.goto(`https://www.fast-growing-trees.com/collections/evergreentrees#/filter:search_zones:${i}/perpage:6`);  
         await page.waitForSelector('#searchspring-content', {visible: true})
-        // const evergreenNames = await page.$$eval(selector, nodes => {       
-        //         return nodes.map(node => {            
-        //             const title = node.querySelector('.product-link');            
-        //             return title.textContent;        
-        //         })    
-        //     });    
+
         let loopVal = i;
         console.log(`Scanning Zone ${loopVal}...`)
                              
@@ -38,23 +33,18 @@ async function scrape(){
                 const img = node.querySelector('img.block-image').getAttribute('src');
                 const zone = loopVal;
                 return {
-                    category,
-                    title,
-                    link,
-                    img,
-                    zone
+                        category,
+                        title,
+                        link,
+                        img,
+                        zone
                 }
                 })
             }, loopVal);
         // get shade trees
         await page.goto(`https://www.fast-growing-trees.com/collections/shadetrees#/filter:search_zones:${i}/perpage:6`);  
         await page.waitForSelector('#searchspring-content', {visible: true})
-        // const shadeNames = await page.$$eval(selector, nodes => {       
-        //         return nodes.map(node => {            
-        //             const title = node.querySelector('.product-link');            
-        //             return title.textContent;        
-        //         })    
-        //     });    
+
         
         const shadePlants = await page.$$eval(selector, (nodes, loopVal) => {
             return nodes.map(node => {
@@ -75,13 +65,7 @@ async function scrape(){
         // get flowering trees
         await page.goto(`https://www.fast-growing-trees.com/collections/floweringtrees#/filter:search_zones:${i}/perpage:6`);  
         await page.waitForSelector('#searchspring-content', {visible: true})
-        // const floweringNames = await page.$$eval(selector, nodes => {       
-        //         return nodes.map(node => {            
-        //             const title = node.querySelector('.product-link');            
-        //             return title.textContent;        
-        //         })    
-        //     });    
-        
+
         const floweringPlants = await page.$$eval(selector, (nodes, loopVal) => {
             return nodes.map(node => {
                 const category = "Flowering";
@@ -98,13 +82,13 @@ async function scrape(){
                     }
                 })
             }, loopVal);
-        allPlants.push([...evergreenPlants, ...shadePlants, ...floweringPlants])
+        allPlants.push(...evergreenPlants, ...shadePlants, ...floweringPlants)
         console.log(`Zone ${loopVal} completed`);
     }   
         //stop loop above this; below should only happen at the end
 
         const fs = require('fs');
-        fs.writeFile('./popularPlantList.json', JSON.stringify(allPlants), err => err ? console.log(err): null);  
+        fs.writeFile('./plantData.json', JSON.stringify(allPlants), err => err ? console.log(err): null);  
         
         await browser.close();
     };
