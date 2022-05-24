@@ -29,14 +29,18 @@ async function scrape(){
                 
                 const category = "Evergreen";
                 const title = node.querySelector('.product-link').textContent;
+                const price = node.querySelector('.product-price span').textContent;
                 const link = node.querySelector('.product-link').href;
                 const img = node.querySelector('img.block-image').getAttribute('src');
+                const imgAlt = node.querySelector('img.block-image').getAttribute('alt');
                 const zone = loopVal;
                 return {
                         category,
                         title,
+                        price,
                         link,
                         img,
+                        imgAlt,
                         zone
                 }
                 })
@@ -50,14 +54,18 @@ async function scrape(){
             return nodes.map(node => {
                 const category = "Shade";
                 const title = node.querySelector('.product-link').textContent;
+                const price = node.querySelector('.product-price span').textContent;
                 const link = node.querySelector('.product-link').href;
                 const img = node.querySelector('img.block-image').getAttribute('src');
+                const imgAlt = node.querySelector('img.block-image').getAttribute('alt');
                 const zone = loopVal;
                     return {
                         category,
                         title,
+                        price,
                         link,
                         img,
+                        imgAlt,
                         zone
                     }
                 })
@@ -70,14 +78,18 @@ async function scrape(){
             return nodes.map(node => {
                 const category = "Flowering";
                 const title = node.querySelector('.product-link').textContent;
+                const price = node.querySelector('.product-price span').textContent;
                 const link = node.querySelector('.product-link').href;
                 const img = node.querySelector('img.block-image').getAttribute('src');
+                const imgAlt = node.querySelector('img.block-image').getAttribute('alt');
                 const zone = loopVal;
                     return {
                         category,
                         title,
+                        price,
                         link,
                         img,
+                        imgAlt,
                         zone
                     }
                 })
